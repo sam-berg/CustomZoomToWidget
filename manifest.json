@@ -10,7 +10,7 @@
   "copyright": "",
   "license": "http://www.apache.org/licenses/LICENSE-2.0",
   "properties": {
-		"inPanel":true,
+		"inPanel":false,
 		"hasLocale": true,
 		"hasStyle":true,
 		"hasConfig":true,

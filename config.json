@@ -1,0 +1,17 @@
+{
+  "options2": {
+    "queryURL": "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/0",
+		"query":"STATE_NAME = 'Maine'",
+    "labelField": "CITY_NAME",
+    "outFields": "*",
+		"zoomLevel":12
+  },
+	"options": {
+    "queryURL": "http://services.arcgis.com/XWaQZrOGjgrsZ6Cu/ArcGIS/rest/services/MaineTownsFeatures/FeatureServer/0",
+		"query":"0=0",
+    "labelField": "TOWN",
+    "outFields": "*",
+		"zoomLevel":12
+  }
+}
+

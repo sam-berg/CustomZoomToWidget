@@ -31,7 +31,11 @@ function (declare, BaseWidget, parser, Select, QueryTask, Query, Memory, ObjectS
       console.log('startup');
 
 
-      //query Maine towns
+      m_sQueryURL = this.config.options.queryURL;
+      m_sQuery = this.config.options.query;
+      m_sLabelField = this.config.options.labelField;
+      nZoomLevel = this.config.options.zoomLevel;
+      m_sOutFields = this.config.options.outFields;
       //initialize query task
       
       queryTask = new QueryTask(m_sQueryURL);
@@ -91,11 +95,26 @@ function (declare, BaseWidget, parser, Select, QueryTask, Query, Memory, ObjectS
       query.outFields = [m_sOutFields];
       query.returnGeometry = true;
       query.where = m_sLabelField + " = '" + sSiteID + "'" + " AND " + m_sQuery;
+      query.outSpatialReference = this.map.spatialReference;
 
       queryTask.on("complete", lang.hitch(this, function (results) {
 
         g = results.featureSet.features[0];
-        this.map.centerAndZoom(g.geometry, nZoomLevel);
+
+        if (g.geometry.type == "point") {
+          cp = g.geometry;
+          this.map.centerAndZoom(cp, nZoomLevel);
+        }
+        if (g.geometry.type == "multipoint") cp = g.geometry;//todo
+        if (g.geometry.type == "polygon") {
+          cp = g.geometry.getCentroid();
+          this.map.setExtent(g.geometry.getExtent());
+        }
+
+        if (g.geometry.type == "polyline") cp = g.geometry.getCentroid();//todo
+        if (g.geometry.type == "extent") cp = g.geometry.getCentroid();//todo
+
+        
         this.map.infoWindow.setFeatures([g]);
         this.map.infoWindow.setTitle(g.attributes[m_sLabelField]);
         this.map.infoWindow.show(g.geometry);
